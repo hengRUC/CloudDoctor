@@ -1,4 +1,5 @@
 // pages/patientList/patientList.js
+const app=getApp()
 Page({
 
   /**
@@ -14,7 +15,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getPatientByAuthor(1)
+    this.getPatientByAuthor(app.globalData.id)
   },
 
   /**
@@ -85,9 +86,18 @@ Page({
    * 添加病历
   */
   addPatient: function(e){
+    let data={
+      patient_id :-1,
+      state:0
+    }
     wx.navigateTo({
       url: '/pages/editPatient/editPatient',
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('sendData', data)
+      }
     })
+   
   },
 
   /**
@@ -95,12 +105,15 @@ Page({
   */
   editPatient: function (event) {
     console.log(event)
-    let patientid = event.currentTarget.dataset.patientid
+    let data={
+      patient_id :event.currentTarget.dataset.patientid,
+      state:1
+    }
     wx.navigateTo({
       url: '/pages/editPatient/editPatient',
       success: function (res) {
         // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('sendData', patientid)
+        res.eventChannel.emit('sendData', data)
       }
     })
 

@@ -5,7 +5,7 @@
 			<view style="margin-bottom: 0;" class="doc-info-right">
 				<text style="font-size:45rpx">{{item.doctor_name}}</text>
 				<view style="display:flex;align-items:center;">
-        <text>{{item.department}} 咨询</text>
+        <!-- <text>{{item.department}} 咨询</text> -->
         <!-- <view style="width:px;"></view> -->
          <!-- <image mode="widthFix" src="../../src/icon/like.png" bindtap="onClickCancelCollect" style="margin-left:120px;"></image> -->
 				  <!-- <view style="width:10px;"></view> -->

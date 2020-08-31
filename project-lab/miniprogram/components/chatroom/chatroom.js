@@ -9,6 +9,8 @@ const SETDATA_SCROLL_TO_BOTTOM = {
 const recorderManager = wx.getRecorderManager()
 Component({
   properties: {
+    chatStatus:Boolean,//聊天室状态
+    ifend:Boolean,//从父组件传递是否允许结束咨询
     envId: String,
     collection: String,
     groupId: String,
@@ -31,9 +33,89 @@ Component({
     scrollToMessage: '',
     hasKeyboard: false,
     isAudioPlay:false,
+    
   },
 
   methods: {
+    updateChatRoomStatus:function()
+    { var that=this
+      wx.request({
+        url: 'https://yiwei.run/api/chatorder/updateChatRoomStatus',
+        // url: 'http://localhost:8080/api/chatorder/updateChatRoomStatus',
+        data: {
+         group_id:this.data.groupId,
+         status:1
+        },
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        method: 'POST',
+        success(res) {
+          console.log(res.data.data)
+          that.setData({
+            chatStatus:false
+          })
+        }
+      })
+    },
+     //发送一条结束咨询的消息并更改状态
+  async endConsult(e){
+    this.try(async () => {
+    const { collection } = this.properties
+    const db = this.db
+    const _ = db.command
+    const app=getApp()
+    console.log("in chat room")
+    console.log(app.globalData)
+    var user_avatar="../../src/icon/default.png"
+    if(app.globalData.is_doctor==1)//如果是医生
+    {
+      user_avatar=app.globalData.avatar_url
+    }
+
+      const doc = {
+      _id: `${Math.random()}_${Date.now()}`,
+      groupId: this.data.groupId,
+      avatar: user_avatar,
+      nickName: app.globalData.name,
+      msgType: 'text',
+      textContent: app.globalData.name+"医生已结束本次咨询，祝您身体健康！",
+      endType: 'end',
+      sendTime: new Date(),
+      sendTimeTS: Date.now(), // fallback
+      }
+    
+
+    this.setData({
+      textInputValue: '',
+      chats: [
+        ...this.data.chats,
+        {
+          ...doc,
+          _openid: this.data.openId,
+          writeStatus: 'pending',
+        },
+      ],
+    })
+    this.scrollToBottom(true)
+
+    await db.collection(collection).add({
+      data: doc,
+    })
+
+    this.setData({
+      chats: this.data.chats.map(chat => {
+        if (chat._id === doc._id) {
+          return {
+            ...chat,
+            writeStatus: 'written',
+          }
+        } else return chat
+      }),
+    })
+  }, '发送文字失败')
+  this.updateChatRoomStatus()
+  },
     onGetUserInfo(e) {
       this.properties.onGetUserInfo(e)
     },
@@ -143,6 +225,15 @@ Component({
         for (const docChange of snapshot.docChanges) {
           switch (docChange.queueType) {
             case 'enqueue': {
+              console.log(docChange.doc)
+              if(docChange.doc.endType==='end'){
+                console.log("what")
+                this.setData(
+                  {
+                    chatStatus:false
+                  }
+                )
+              }
               hasOthersMessage = docChange.doc._openid !== this.data.openId
               //hasOthersMessage = docChange.doc.groupId !== this.data.groupId
               const ind = chats.findIndex(chat => chat._id === docChange.doc._id)
@@ -152,10 +243,15 @@ Component({
                     ...docChange.doc,
                     tempFilePath: chats[ind].tempFilePath,
                   })
-                } else chats.splice(ind, 1, docChange.doc)
+                } else 
+                {
+                  chats.splice(ind, 1, docChange.doc)
+  
+                }
               } else {
                 hasNewMessage = true
                 chats.push(docChange.doc)
+                console.log(docChange.doc)
               }
               break
             }
@@ -179,17 +275,26 @@ Component({
         const { collection } = this.properties
         const db = this.db
         const _ = db.command
+        const app=getApp()
+        console.log("in chat room")
+        console.log(app.globalData)
+        var user_avatar="../../src/icon/default.png"
+        if(app.globalData.is_doctor==1)//如果是医生
+        {
+          user_avatar=app.globalData.avatar_url
+        }
 
-        const doc = {
+          const doc = {
           _id: `${Math.random()}_${Date.now()}`,
           groupId: this.data.groupId,
-          avatar: this.data.userInfo.avatarUrl,
-          nickName: this.data.userInfo.nickName,
+          avatar: user_avatar,
+          nickName: app.globalData.name,
           msgType: 'text',
           textContent: e.detail.value,
           sendTime: new Date(),
           sendTimeTS: Date.now(), // fallback
-        }
+          }
+        
 
         this.setData({
           textInputValue: '',
@@ -297,11 +402,17 @@ Component({
     },
     async sendrecord(e){
       const { envId, collection } = this.properties
+      var user_avatar="../../src/icon/default.png"
+      const app=getApp()
+      if(app.globalData.is_doctor==1)//如果是医生
+      {
+        user_avatar=app.globalData.avatar_url
+      }
       const doc = {
         _id: `${Math.random()}_${Date.now()}`,
         groupId: this.data.groupId,
-        avatar: this.data.userInfo.avatarUrl,
-        nickName: this.data.userInfo.nickName,
+        avatar: user_avatar,
+        nickName: app.globalData.name,
         msgType: 'record',
         sendTime: util.formatTime(new Date()),
         sendTimeTS: Date.now(), // fallback
@@ -363,11 +474,17 @@ Component({
         sourceType: ['album', 'camera'],
         success: async res => {
           const { envId, collection } = this.properties
+          var user_avatar="../../src/icon/default.png"
+          const app=getApp()
+          if(app.globalData.is_doctor==1)//如果是医生
+          {
+            user_avatar=app.globalData.avatar_url
+          }
           const doc = {
             _id: `${Math.random()}_${Date.now()}`,
             groupId: this.data.groupId,
-            avatar: this.data.userInfo.avatarUrl,
-            nickName: this.data.userInfo.nickName,
+            avatar: user_avatar,
+            nickName: app.globalData.name,
             msgType: 'image',
             sendTime: new Date(),
             sendTimeTS: Date.now(), // fallback
@@ -495,4 +612,5 @@ Component({
     this.initRoom()
     this.fatalRebuildCount = 0
   },
+ 
 })

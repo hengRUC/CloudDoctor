@@ -5,18 +5,23 @@
     <view class="doctorImgInfo">
       <image src="{{avatar}}" class="doctorImg"></image>
       <view class="doctorInfo">
-       <view style="width:180px"></view>
-        <view wx:if="{{isCollect == 0}}">
+       <view style="width:200px"></view>
+    <view wx:if="{{isCollect == 0}}">
          <image src="../../src/icon/dislike.png" class="like" bindtap="onClickLike"></image>
         </view>
          <view wx:if="{{isCollect == 1}}">
          <image src="../../src/icon/like.png" class="like" bindtap="onClickDislike"></image>
         </view>
+
         <text class="doctorName">{{doctorName}}</text>
-
-
-        <text class="doctorDep">{{title}}</text>
-        
+    
+        <!-- <text class="doctorDep">{{title}}</text> -->
+        <view wx:if="{{doctor_type==1}}">
+                <text class="doctorDep">特殊专家</text>
+        </view>
+         <view wx:if="{{doctor_type==0}}">
+                <text class="doctorDep">普通专家</text>
+        </view>
        
         <view class="doctorScoreReview">
           <image src="../../src/icon/star.png" class="star"></image>
@@ -30,28 +35,28 @@
            <text class="doctorSpecial">擅长：{{expert}}</text>
     <view class="doctorWork">
       <view>
-        <text style="display:block;font-size:25rpx;color:#c0c0c0;">图文咨询</text>
-        <text style=" text-align: center;display:block;font-size:45rpx;color:black;">¥{{inquiry_price}}</text>
+        <text style="text-align: center;display:block;font-size:25rpx;color:#c0c0c0;">科室</text>
+        <text style=" text-align: center;font-size:35rpx;color:rgb(32, 32, 32);">{{department}}</text>
       </view>
       <view>
-        <text style="display:block;font-size:25rpx;color:#c0c0c0;">在线咨询</text>
-        <text style=" text-align: center;display:block;font-size:45rpx;color:black;">¥{{chat_price}}</text>
+        <text style="text-align: center;display:block;font-size:25rpx;color:#c0c0c0;">咨询量</text>
+        <text style=" text-align: center;display:block;font-size:45rpx;color:rgb(32, 32, 32);">{{quiryNum}}</text>
       </view>
       <view>
-        <text style="display:block;font-size:25rpx;color:#c0c0c0;">接受咨询率</text>
-        <text style=" text-align: center;display:block;font-size:45rpx;color:black;">{{rate}}%</text>
+        <text style="text-align: center;display:block;font-size:25rpx;color:#c0c0c0;">接受咨询率</text>
+        <text style=" text-align: center;display:block;font-size:45rpx;color:rgb(32, 32, 32);">{{rate}}%</text>
       </view>
     </view>
   </view>
   <view class="title">
-    <text style="font-size:35rpx;color:black;margin-left:35rpx;">咨询服务定价</text>
+    <text style="font-size:35rpx;color:black;margin-left:35rpx;">服务说明</text>
     <image src="../../src/icon/i .png" style="margin-left:15rpx;height:50rpx;width:50rpx" bindtap="showPrice"></image>
     <!-- <text style="font-size:35rpx;color:rgb(10, 143, 245);margin-left:280rpx;">医生排班</text> -->
   </view>
   <view class="consultType">
-    <button style="width:220rpx;height:140rpx;" bindtap="onClickInquiry">
-      <image src="../../src/icon/email.png" style="display:block;width:60rpx;height:60rpx;"></image>
-      <text style="font-size:25rpx;color:white;display:block;">图文咨询</text>
+    <button style="width:220rpx;height:140rpx;" bindtap="onClickVip">
+      <image src="../../src/icon/doctor_vip2.png" style="display:block;width:60rpx;height:60rpx;"></image>
+      <text style="font-size:25rpx;color:white;display:block;">会员信息</text>
     </button>
     <button style="width:220rpx;height:140rpx;" bindtap="redirectToChatRooms">
       <image src="../../src/icon/video.png" style="display:block;width:60rpx;height:60rpx;"></image>
@@ -80,6 +85,7 @@
         <view style="margin-left:10%;width:80%;">
           <text style="font-size:30rpx;word-break: break-all;">
           {{introduction}}
+          <!-- 我的情况 -->
           </text>
         </view>
         <!-- <text class="knowMore">了解更多</text> -->
@@ -159,7 +165,7 @@
     <view class="aboutMe" wx:for="{{commentList}}">
       <view class="aboutMePart1">
         <image src="../../src/icon/aboutMe.png" class="aboutMeImage"></image>
-        <text style="margin-top:20rpx;margin-left:40rpx;font-weight:bolder;">Y**r</text>
+        <text style="margin-top:20rpx;margin-left:40rpx;font-weight:bolder;">匿名</text>
            <view style="margin-left:10%;width:80%;margin-top:10rpx">
           <!-- <text style="font-size:30rpx;word-break: break-all;">
           
@@ -246,5 +252,12 @@
     </view>
     <view class="modalCancel" hidden="{{hideModal}}"></view>
   </view> -->
+  
+<modal title="在线咨询" confirm-text="确定" hidden="{{modalHidden}}" bindconfirm="confirmChat" bindcancel="modalHide">
+    <view>
+      <text>{{modalContent}}</text>
+    </view>
+
+</modal>
 </view>
 

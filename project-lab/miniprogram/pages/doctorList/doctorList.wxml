@@ -3,7 +3,7 @@
   <view class="search">
     <!-- <image src="../../src/icon/delete.png" class="deleteImg"></image> -->
     <image src="../../src/icon/search.png" bindtap="onClickSearch" class="deleteImg"></image>
-    <input placeholder="搜疾病/症状/科室" style="text-align:center" bindinput="bindSearch" class="inputSearch"></input>
+    <input placeholder="搜索咨询内容" style="text-align:center" bindinput="bindSearch" class="inputSearch"></input>
   </view>
   <view class='result-container' style="position: fixed; z-index: 10">
   <view class='search-history' wx:if="{{StorageFlag}}">
@@ -17,13 +17,13 @@
   <view class="sector-one"></view>
     <view class="typeList">
       <view class="type"  wx:for="{{typeArray}}" bindtap="onClickDepartment" data-department="{{item}}">
-        <text class="typeText1" wx:if = "{{item.status == 0}}">
-        <!-- {{item.type}} -->
-        </text>
-        <text class="typeText2" wx:if = "{{item.status == 1}}">
-        <!-- {{item.type}} -->
-        </text>
-        <text class="typeText3">（咨询）</text>
+        <view class="typeText1" wx:if= "{{item.status == 0}}">
+        {{item.type}}
+        </view>
+        <view class="typeText2" wx:if= "{{item.status == 1}}">
+        {{item.type}}
+        </view>
+        <!-- <text class="typeText3">（咨询）</text> -->
 
       </view>
     </view>
@@ -34,7 +34,14 @@
         <view class="doctorInfo">
           <view class="doctorNamePos">
             <text class="doctorName">{{item.doctor_name}}</text>
-            <text class="doctorPos">{{item.title}}</text>
+            <view hidden="{{item.doctor_type==0}}">
+             <image src="../../src/icon/spe2.png" class="spe"></image>
+            <text class="doctorPos">特殊专家</text>
+             </view>
+              <view hidden="{{item.doctor_type==1}}">
+             <image src="../../src/icon/gen3.png" class="spe"></image>
+            <text class="doctorPos">普通专家</text>
+             </view>
           </view>
           <!-- <text class="doctorDep">{{item.department}} 咨询</text> -->
           <view class="doctorScore">
@@ -44,9 +51,11 @@
           </view>
           <text class="doctorSpecial">{{item.expert}}</text>
           <view class="priceConsult">
-            <text class="price">￥{{item.inquiry_price}}</text>
-            <button style="width:auto" class="consultButton" bindtap="onClickConsult" data-doctorId="{{item.id}}">向他咨询</button>
+            <!-- <image src="../../src/icon/spe2.png" class="spe"></image>
+            <text class="review">特殊专家</text> -->
+            
           </view>
+          <button style="width:auto" class="consultButton" bindtap="onClickConsult" data-doctorId="{{item.id}}">向他咨询</button>
         </view>
       </view>
     </view>

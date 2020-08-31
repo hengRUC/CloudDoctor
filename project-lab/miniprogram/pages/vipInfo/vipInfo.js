@@ -1,25 +1,28 @@
 // pages/buyvip/buyvip.js
+const app=getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    generalExperts: {'availableTimes': 0, 'usedTimes': 0, 'totalTimes': 0},
-    specialExperts: { 'availableTimes': 0, 'usedTimes': 0, 'totalTimes': 0 },
-    additionInfo: ''
+    // generalExperts: {'availableTimes': 0, 'usedTimes': 0, 'totalTimes': 0},
+    // specialExperts: { 'availableTimes': 0, 'usedTimes': 0, 'totalTimes': 0 },
+    general_total:0,
+    general_used:0,
+    general_remain:0,
+    special_total:0,
+    special_used:0,
+    special_remain:0,
+    addition_info: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // 从后端获取会员信息
-    this.setData({
-      generalExperts: { 'availableTimes': 5, 'usedTimes': 10, 'totalTimes': 15 },
-      specialExperts: { 'availableTimes': 3, 'usedTimes': 2, 'totalTimes': 5 },
-      additionInfo: '体检、基因检测、健康筛查、挂号...服务不在此处记录，每次购买对应商品后，客服将在五个工作日内线下联系您，并为您安排相关服务，更多信息详讯客服:138-xxxx-xxxx'
-    });
+    this.getVipInfoById()
+
   },
 
   /**
@@ -70,4 +73,35 @@ Page({
   onShareAppMessage: function () {
 
   },
+   /**
+  * 获取会员信息
+  */
+  getVipInfoById(){
+  
+  var that =this
+  wx.request({
+  url: 'https://yiwei.run/api/vip/getVipByUid',
+  // url: 'http://localhost:8080/api/vip/getVipByUid',
+    data: {
+    id_user:app.globalData.id
+    },
+    header: {
+      'content-type': 'application/json' // 默认值
+    },
+    method: 'POST',
+    success(res) {
+      console.log(res.data)
+      var data=res.data.data[0]
+      that.setData({
+        general_total:data.general_total,
+        general_used:data.general_used,
+        general_remain:data.general_total-data.general_used,
+        special_total:data.special_total,
+        special_used:data.special_used,
+        special_remain:data.special_total-data.special_used,
+        addition_info: data.addition_info
+      })
+    }
+})
+},
 })

@@ -1,4 +1,7 @@
 /* pages/doctorHome/doctorHome.wxss */
+page{
+  background-color: ghostwhite;
+}
 .container
 {
   width: 100%;
@@ -14,7 +17,8 @@
 }
 .like-set{
   /* text-align: right; */
-  margin-left: 180rpx;
+  float:right;
+  margin-left: 230rpx;
 }
 
 
@@ -63,12 +67,15 @@
   font-size: 30rpx;
   color: rgb(10, 143, 245);
   font-weight: bolder;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
 }
 .doctorDep
 {
   display: block;
   margin-top: 20rpx;
-  color: black;
+  color: rgb(32, 32, 32);
   font-size: 25rpx;
 }
 .doctorScoreReview

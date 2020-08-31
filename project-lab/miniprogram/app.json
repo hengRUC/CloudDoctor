@@ -1,24 +1,21 @@
 {
   "pages": [
     "pages/doctorList/doctorList",
-    "pages/doctorRegister/doctorRegister",
     "pages/personal/personal",
+    "pages/userRegister/userRegister",
     "pages/register/register",
     "pages/comment/comment",
     "pages/schedule/schedule",
-    "pages/checkOrder/checkOrder",
-    "pages/reply/reply",
     "pages/chat/chat",
     "pages/room/room",
-    "pages/inquiry/inquiry",
     "pages/editPatient/editPatient",
     "pages/patientList/patientList",
     "pages/doctorHome/doctorHome",
     "pages/collect/collect",
-    "pages/inquiryHistory/inquiryHistory",
+    "pages/prescription/prescription",
     "pages/buyvip/buyvip",
     "pages/vipInfo/vipInfo",
-    "pages/prescription/prescription"
+    "pages/doctorPersonal/doctorPersonal"
   ],
   "window": {
     "backgroundTextStyle": "light",

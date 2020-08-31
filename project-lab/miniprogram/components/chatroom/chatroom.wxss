@@ -4,6 +4,18 @@
   display: flex;
   flex-direction: column;
 }
+.consultButton
+{ 
+  /* margin-left: 5rpx; */
+  margin-right: 5rpx;
+  height: auto;
+  /* float: right; */
+  border-radius: 40rpx;
+  background-color:  rgba(24, 135, 219, 0.9);
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #ffffff;
+}
 
 .chatroom .header {
   flex-basis: fit-content;
@@ -160,7 +172,7 @@ button {
 button.userinfo {
   background: darkturquoise;
   color: aliceblue;
-  padding: 0 100rpx;
+  padding: 5rpx 30rpx;
   border: 1px solid #ddd;
   border-radius: 20px;
 }

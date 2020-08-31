@@ -13,9 +13,9 @@ Page({
     author_id: 1,
     age: "请输入岁数",
     sex: 0,
-    illness_history: "请输入就诊人的病史",
-    medicine_history: "请输入就诊人的用药史",
-    allergen: "请输入就诊人的过敏药物"
+    illness_history: "",
+    medicine_history: "",
+    allergen: ""
   },
 
   /**
@@ -27,11 +27,14 @@ Page({
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
     eventChannel.on('sendData', data => {
       that.setData({
-        state: 1,
-        patient_id:data
+        state: data.state,
+        patient_id:data.patient_id
       });
       console.log(that.data.patient_id, ' from patientList');
-      this.getPatientById(that.data.patient_id)
+      if(that.data.state==1)
+      {
+        this.getPatientById(that.data.patient_id)
+      }
     })
   },
 
@@ -129,6 +132,7 @@ Page({
       this.addPatient()
     }
     else if (this.data.state == 1) {
+      console.log("state==1")
       this.editPatient()
     }
     
@@ -187,7 +191,7 @@ Page({
   */
   editPatient: function () {
   var that = this
-  var id_patient = event.currentTarget.dataset.patientid
+  var id_patient = this.data.patient_id
       //编辑病人信息
     wx.request({
       url: 'https://yiwei.run/api/patient/editPatient',
@@ -208,6 +212,9 @@ Page({
     success(res) {
       console.log(res.data.data)
     }
+  })
+  wx.redirectTo({
+    url: '/pages/patientList/patientList',
   })
   },
   /**

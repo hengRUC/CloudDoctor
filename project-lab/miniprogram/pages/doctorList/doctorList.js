@@ -1,5 +1,6 @@
 // pages/doctorList/doctorList.js
 //云文件存储路径
+const app=getApp()
 const cloudPath="cloud://airobot-z9ted.6169-airobot-z9ted-1302168733/"
 Page({
 
@@ -87,6 +88,7 @@ Page({
     //请求医生列表
     wx.request({
       url: 'https://yiwei.run/api/doctor/getDoctorByDepartment',
+      // url: 'http://localhost:8080/api/doctor/getDoctorByDepartment',
       data: {
         department: type,
       },
@@ -233,13 +235,21 @@ Page({
   onClickConsult: function (event) {
     console.log(event.currentTarget.dataset.doctorid)
     var doctorid = event.currentTarget.dataset.doctorid
+    if(app.globalData.is_register==1){
     wx.navigateTo({
       url: '/pages/doctorHome/doctorHome',
       success: function (res) {
         // 通过eventChannel向被打开页面传送数据
         res.eventChannel.emit('sendData', doctorid)
       }
-    })
+    })}
+    else{
+      wx.redirectTo({
+        url: '/pages/register/register',
+        success: function (res) {
+        }
+      })}
+    
   },
   /**
      * 响应搜索词条响应事件

@@ -1,19 +1,20 @@
 <!--pages/doctorList/doctorList.wxml-->
+<!-- <image src="../../src/icon/card.png" ></image> -->
 <view class="container">
   <view class="productList">
-    <view class="product" wx:for="{{productList}}">
-      <image src="{{item.productImg}}" class="productImg"  mode='aspectFill'></image>
+    <view class="product" wx:for="{{cardList}}">
+      <image src="{{item.img_url}}" class="productImg"  mode='aspectFill'></image>
       <view class="productInfo">
         <view class="productName">
-            <text class="productNameText">{{item.productName}}</text>
+            <text class="productNameText">{{item.title}}</text>
         </view>
         <view class="productDetail">
-            <text class="productDetailText">{{item.productDetail}}</text>
+            <text class="productDetailText">{{item.introduction}}</text>
         </view>
         <view class="productPrice">
-          <text class="price">￥{{item.productPrice}}</text>
-          <button  class="vipDetailButton" bindtap="onClickVipDetail" data-productid="{{item.productId}}">介绍</button>
-          <button  class="vipBuyButton" bindtap="onClickVipBuy" data-productid="{{item.productId}}">购买</button>
+          <text class="price">￥{{item.price}}</text>
+          <button  class="vipDetailButton" bindtap="onClickVipDetail" data-product="{{item}}">介绍</button>
+          <button  class="vipBuyButton" bindtap="onClickVipBuy" data-card="{{item}}">购买</button>
         </view>
       </view>
     </view>

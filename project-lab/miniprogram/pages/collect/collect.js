@@ -1,5 +1,6 @@
 // pages/collect/collect.js
 const cloudPath="cloud://airobot-z9ted.6169-airobot-z9ted-1302168733/"
+const app=getApp()
 
 Page({
 
@@ -14,7 +15,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getCollectDoctorList(1)
+    this.getCollectDoctorList(app.globalData.id)
   },
 
   /**
@@ -108,7 +109,7 @@ Page({
      */
   onClickCancelCollect: function (event) {
     this.deleteCollect(event.currentTarget.dataset.id)
-    this.getCollectDoctorList(1)
+    this.getCollectDoctorList(app.globalData.id)
   },
 
   /**

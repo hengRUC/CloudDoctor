@@ -1,6 +1,7 @@
 page {
   width: 100%;
-  background-color: #f6f6f6;
+  height: 100%;
+  background-color: #0091ff;
 }
 
 .container {
@@ -40,25 +41,37 @@ page {
   width: 90%;
   margin: 30rpx auto;
   background-color:#ffffff;
-  border-radius: 20rpx;
+  border-radius: 40rpx;
   padding: 20rpx;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
 }
 
 .title {
   width: 100%;
   font-weight: bolder;
-  padding: 10rpx 5rpx;
+  /* padding: 10rpx 5rpx; */
+  color:#0091ff;
+  text-align: center;
+  margin-bottom: 10rpx;
 }
 
 .details {
-  width: 100%;
-  padding: 10rpx 5rpx;
+  /* text-align: center; */
+  width: 90%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  /* align-items: center; */
+  /* padding: 10rpx 5rpx; */
 }
 
 .detailsInfo{
-  width: 100%;
-  display: block;
-  padding: 5rpx 0;
+  /* width: 100%; */
+  /* display: block; */
+  /* padding: 5rpx 0; */
 }
 
 .availableTimes {
@@ -68,17 +81,86 @@ page {
 
 .usedTimes {
   font-weight: bold;
-  color: red;
+  color: rgb(243, 109, 109);
 }
 
 .totalTimes {
   font-weight: bold;
-  color: black;
+  color: #0091ff;
 }
 
-/* .additionInfo {
-  color: #c0cfc0;
-} */
+.additionInfo {
+  /* color: #c0cfc0; */
+
+}
+
+
+.reg-box{
+  height:100%;
+  width:100%;
+ 
+}
+
+.reg-top{
+  display:block;
+  width: 100%;
+}
+
+.reg-mid{
+  background-color: white;
+  height: 80rpx;
+  border-radius: 0 0 100rpx 100rpx;
+  position: relative;
+  top: -5rpx;
+}
+
+.reg-text{
+  display: block;
+  text-align: center;
+  letter-spacing: 15rpx;
+  font-size: 50rpx;
+  font-weight: 500;
+  /* color:#0091ff; */
+  
+}
+
+.reg-bottom{
+  text-align: center;
+  /* position: relative;
+  top: -90rpx; */
+  width: auto;
+  /* background-color: #ff0000; */
+}
+
+.reg-bottom text{
+  display: inline-block;
+  background-color: #0091ff;
+  color: #fff;
+  font-size: 24rpx;
+  
+  
+}
+
+.reg-button{
+  margin: 75rpx 20rpx 55rpx 20rpx;
+  border-radius: 100rpx;
+  background-color: #0091ff;
+  border:2rpx solid #fff;
+  color: #fff;
+}
+
+.phone-button{
+  border-radius: 100rpx;
+  background-color: #0091ff;
+  border:2rpx solid #fff;
+  color: #fff;
+}
+
+.reg-button-hover{
+  background-color: #fff;
+  color: #0091ff; 
+}
+
 
 
 

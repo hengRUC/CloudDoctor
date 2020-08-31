@@ -1,0 +1,69 @@
+<!--miniprogram/pages/doctorRegister/doctorRegister.wxml-->
+<view class="inq-container">
+<view class="card">
+		<view class="card-head">
+			<image src="../../src/icon/menu.png" mode="widthFix"></image>
+			<text>注册</text>
+		</view>
+
+<view class="card-body">
+
+    	<!-- <view class="card-button" bindtap="uploadPic">
+				<image mode="widthFix" src="../../src/icon/label.png"></image>
+				<text>上传头像</text>
+      </view> -->
+      
+      
+
+      <!-- <view class="send-more-result-main" hidden="{{images.length==0}}">
+        <block wx:for="{{images}}" wx:for-index="idx">
+          <view class="file-box">
+          <view class="img-box">
+          <image src="{{item}}" mode="aspectFill" ></image>
+          <icon class="remove-icon" type="cancel" size="23" color="#B2B2B2" catchtap="deleteImage"/>
+          </view>
+          </view>
+        </block>
+      </view> -->
+
+ <view class="weui-cells__title">姓名</view>
+    <view class="weui-cells weui-cells_after-title">
+    <view class="page-second-title"></view> 
+      <view class="weui-cell weui-cell_input">
+        <input class="weui-input" auto-focus placeholder="{{name}}" placeholder-style="color:rgb(151, 149, 149);" bindinput="getName"/>
+      </view>
+  </view>
+    <view class="page-second-title"></view> 
+
+<!-- <view class="weui-cells__title">联系方式</view>
+    <view class="weui-cells weui-cells_after-title">
+    <view class="page-second-title"></view> 
+      <view class="weui-cell weui-cell_input">
+        <input class="weui-input" auto-focus placeholder="{{contact_number}}" bindinput="getContactNumber"/>
+      </view>
+</view> -->
+
+<view class="weui-cells__title">地址</view>
+    <view class="weui-cells weui-cells_after-title">
+    <view class="page-second-title"></view> 
+<picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+    <view class="picker">
+    <text class="current-region"> {{currentRegion}}> {{region[0]}} {{region[1]}} {{region[2]}}</text>
+    </view>
+  </picker>
+  </view>	  
+</view>
+</view>
+</view>
+
+	<view class="inq-bottom">
+		<view class="protect">
+			<image src="../../src/icon/lock.png" mode="widthFix"></image>
+			<text>您的个人信息将受到100%保护</text>
+		</view>
+
+		<view class="card-button" id="pay" bindtap="Submit">
+			<text>注册</text>
+			<image mode="widthFix" src="../../src/icon/Right.png"></image>
+		</view>
+	</view>

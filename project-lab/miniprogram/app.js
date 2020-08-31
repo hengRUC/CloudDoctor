@@ -66,6 +66,7 @@ App({
     wx.request({
       // url: 'https://yiwei.run/api/user/getUserId',
       url: 'https://yiwei.run/api/user/getUserId',
+      // url: 'http://localhost:8080/api/user/getUserId',
       data: {
         openid:openId,
       },
@@ -74,17 +75,36 @@ App({
       },
       method: 'POST',
       success(res) {
-          console.log(res.data.data)
-          that.globalData.id = res.data.data.id
-          that.globalData.is_doctor = res.data.data.is_doctor
-
+          console.log(res.data)
+          that.globalData.is_register = res.data.is_register
+          that.globalData.is_doctor = res.data.is_doctor
+          if(that.globalData.is_register==1) //如果已注册
+          {
+          that.globalData.id = res.data.data[0].id
+          that.globalData.name = res.data.data[0].name
+          that.globalData.contact_number = res.data.data[0].contact_number
+          if(that.globalData.is_doctor==1)//如果是医生
+          {
+            that.globalData.name=res.data.data[0].doctor_name
+            that.globalData.avatar_url="cloud://airobot-z9ted.6169-airobot-z9ted-1302168733/"+res.data.data[0].avatar
+          }
+          else{
+            that.globalData.name=res.data.data[0].name
+          }
+          }
+         
+          console.log(that.globalData)
       }
     })
   },
   globalData: {
-    openid: null,
-    id:null,
-    is_doctor:0 //判断当前用户是否是医生
+    is_register:0,//判断用户是否注册
+    openid:"",
+    id:0,
+    is_doctor:0, //判断当前用户是否是医生
+    name:"点击注册", //用户昵称
+    contact_number:"",//联系方式
+    avatar_url:""//医生头像
   }
 }
 )

@@ -41,13 +41,13 @@
 			
 
 	
-   <view class="page-section-title">病史</view>    
+   <view class="page-section-title">身体状况</view>    
    <view class="page-second-title"></view> 
       <textarea maxlength='800' placeholder="{{illness_history}}" bindinput="getIllnessHistory"></textarea>
-   <view class="page-section-title">用药史</view> 
+   <view class="page-section-title">身体状况</view> 
    <view class="page-second-title"></view>        
       <textarea maxlength='800' placeholder="{{medicine_history}}" bindinput="getMedicineHistory"></textarea>
-    <view class="page-section-title">过敏药物</view>   
+    <view class="page-section-title">身体状况</view>   
     <view class="page-second-title"></view>  
       <textarea maxlength='800' placeholder="{{allergen}}" bindinput="getAllergen"></textarea>
 		

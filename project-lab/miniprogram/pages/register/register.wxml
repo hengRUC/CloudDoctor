@@ -1,17 +1,36 @@
 <view class="reg-box" >
+<view animation="{{animationData}}">
 	<image class="reg-top" src='../../src/register-top.png' mode="widthFix" bindtap="loginss"></image>
+
 	<view class="reg-mid">
-		<text class="reg-text">在家就能与医生</text>
-		<text class="reg-text">预约线上问诊</text>
 	</view>
 
-	<view class="reg-bottom" >
+		<!-- <view class="reg-bottom" >
 		<button class='reg-button' hover-class="reg-button-hover" style='padding: 3px 40px;' size="mini">登录</button>
 		<button class='reg-button' hover-class="reg-button-hover" style='padding: 3px 40px;' size="mini">注册</button>
-		<view style="padding: 90rpx 0;background-color:#0091ff">
+	  </view> -->
+	<!-- <view class="reg-mid"> -->
+		<!-- <text class="reg-text">在家就能与医生</text>
+		<text class="reg-text">预约线上问诊</text> -->
+	<!-- </view> -->
+
+	 <view class="reg-bottom" hidden="{{islogin==1}}">
+
+		<button class='reg-button' hover-class="reg-button-hover" style='padding: 8px 40px;' bindtap="login">登录/注册</button>
+
+		 <!-- <view style="padding: 90rpx 0;background-color:#0091ff">
 			<text>如果你是医生？</text><text style="text-decoration: underline;">点击这里</text>
-		</view>
+		</view>  -->
+	</view>
+	<view class="reg-bottom" >
+
+		<button class='reg-button' hover-class="reg-button-hover" style='padding: 8px 40px;' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" hidden="{{islogin==0}}">使用微信绑定手机号注册</button>
+
+		 <!-- <view style="padding: 90rpx 0;background-color:#0091ff">
+			<text>如果你是医生？</text><text style="text-decoration: underline;">点击这里</text>
+		</view>  -->
 	</view>
 
+	</view>
 
 </view>

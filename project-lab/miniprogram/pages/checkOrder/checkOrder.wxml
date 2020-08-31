@@ -1,6 +1,0 @@
-<!--miniprogram/pages/checkOrder/checkOrder.wxml-->
-<text>miniprogram/pages/checkOrder/checkOrder.wxml</text>
-	<view class="card-button" id="pay" bindtap="payForChat">
-			<text>支付诊费</text>
-			<image mode="widthFix" src="../../src/icon/Right.png"></image>
-		</view>

@@ -11,10 +11,11 @@ Page({
     chatRoomCollection: 'chatroom',
     chatRoomGroupId: '',
     chatRoomGroupName: '吴医生',
-
+    ifChatroomEnd:false,
     // functions for used in chatroom components
     onGetUserInfo: null,
     getOpenID: null,
+    chatRoomStatus:false,
   },
 
   onLoad: function (opentions) {
@@ -25,12 +26,20 @@ Page({
       that.setData({
         //chatRoomGroupId: "asdfghjkll"
         chatRoomGroupId: data.groupid,
-        chatRoomGroupName:data.doctor_name
+        chatRoomGroupName:data.doctor_name,
+        chatRoomStatus:data.room_status
       });
       console.log(this.data.chatRoomGroupId)
     })
    
-
+    if(app.globalData.is_doctor==1){
+      this.setData(
+        {
+          ifChatroomEnd:true
+        }
+      )
+     
+    }
     // 获取用户信息
     wx.getSetting({
       success: res => {

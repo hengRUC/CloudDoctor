@@ -11,6 +11,15 @@
 .star-set image{
   width: 60rpx;
 }
+
+.spe-set{
+  text-align: center;
+}
+
+.spe-set image{
+  width: 60rpx;
+}
+
 .search
 {
   border-radius: 30rpx;
@@ -88,28 +97,32 @@
   justify-content: center;
   margin-left: 10rpx;
   width: 90%;
-  height: 138rpx;
+  /* height: 138rpx; */
+  height: 120rpx;
   background-color:#ffffff;
   /* border-bottom-color:#c0c0c0;  */
   /* border-bottom-width:4rpx;
   border-bottom-style:solid; */
   border-radius: 15rpx;
-  text-align: center;
-  flex-direction: column;
+  /* text-align: center; */
+  /* flex-direction: column; */
 
 }
 .typeText1
 {
-  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
   font-weight: 520;
-  color: rgb(10, 143, 245);
+  color: #707070;
   text-align: center;
 }
 .typeText2
 {
-  font-size: 35rpx;
+  font-size: 30rpx;
   font-weight: 600;
-  color:#707070;
+  color:#565656;
   text-align: center;
 }
 
@@ -166,7 +179,7 @@
 .doctorPos
 {
   margin-top: 10rpx;
-  margin-left: 30rpx;
+  margin-left: 20rpx;
   font-size: 28rpx;
   color: #c0c0c0;
 }
@@ -188,6 +201,12 @@
 {
   width: 40rpx;
   height: 40rpx;
+  float: left;
+}
+.spe
+{
+  width: 50rpx;
+  height: 50rpx;
   float: left;
 }
 .score
@@ -228,10 +247,12 @@
   font-size: 35rpx;
   font-weight: bolder;
   color: red;
+  width:20rpx
 }
 .consultButton
-{ margin-left: 50rpx;
-  /* margin-right: 0; */
+{ 
+  margin-left: 5rpx;
+  /* margin-right: 0rpx; */
   height: auto;
   float: right;
   border-radius: 40rpx;

@@ -1,20 +1,12 @@
 // pages/buyvip/buyvip.js
+const app=getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    productList: [
-      { 'productImg': '../../src/doctor1.png', 'productName': '普通健康卡',
-      'productDetail': '专家线上咨询1次，帮助办理挂号1次（仅限平台专家，不含挂号费）',
-        'productPrice': 380, 'productId': 1},
-      {
-        'productImg': '../../src/doctor1.png', 'productName': '普通健康卡',
-        'productDetail': '家庭成员享受专家线上咨询5次．送原价值3000元体检1次，健康评估1次，个人定制健康管理方案1个．如需就诊，提供后续办理挂号、住院、手术服务（不含医院费用．仅限平台专家）1次。如不参与体检．本套餐可提供12次线上咨询。',
-        'productPrice': 380, 'productId': 2
-      }
-    ],
+    cardList: [],
     modalHidden: true,
     modalContent: {}
   },
@@ -24,11 +16,7 @@ Page({
    */
   onLoad: function (options) {
     // 从后段获取产品列表
-    // this.setData(
-    //   {
-    //     productList: ...,
-    //   }
-    // )
+    this.getAllCardList()
   },
 
   /**
@@ -81,23 +69,23 @@ Page({
   },
 
   onClickVipDetail: function (event) {
-    console.log(event.currentTarget.dataset.productid)
-    var productid = event.currentTarget.dataset.productid
-    // 通过productid向后端获取对应商品信息,然后更新that.modalContent
+    console.log(event.currentTarget.dataset)
+    var cardInfo = event.currentTarget.dataset.product
     this.setData({
       modalContent: {
-        'title': '普通健康卡',
-        'price': 380,
-        'info': '家庭成员享受专家线上咨询5次．送原价值3000元体检1次，健康评估1次，个人定制健康管理方案1个．如需就诊，提供后续办理挂号、住院、手术服务（不含医院费用．仅限平台专家）1次。如不参与体检．本套餐可提供12次线上咨询。',
-        'additioninfo': '除在线问诊外，其他服务将由客服主动联系您，请耐心等待。更多信息详讯客服:138-xxxx-xxxx'},
+        'title': cardInfo.title,
+        'price': cardInfo.price,
+        'info': cardInfo.introduction,
+        'additioninfo': cardInfo.addition_info},
       modalHidden: false
     });
   },
 
   onClickVipBuy: function (event) {
-    console.log(event.currentTarget.dataset.productid)
-    var productid = event.currentTarget.dataset.productid
+    console.log(event.currentTarget.dataset)
+    var product = event.currentTarget.dataset.card
     // 通过productid跳转至付款界面，付款后跳转至会员信息界面
+    this.addCardOrder(product.id,product.price,product.general_num,product.special_num)
 
   },
 
@@ -105,5 +93,135 @@ Page({
     this.setData({
       modalHidden: true
     })
-  }
+  },
+   /**
+   * 获取产品列表
+   */
+  getAllCardList: function () {
+    var that =this
+    wx.request({
+    url: 'https://yiwei.run/api/card/getAllCardList',
+    // url: 'http://localhost:8080/api/card/getAllCardList',
+      data: {
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      method: 'POST',
+      success(res) {
+        console.log(res.data)
+        var data=res.data.data
+        that.setData({
+         cardList:data
+        })
+      }
+  })
+  },
+   /**
+   * 新增会员卡订单
+   */
+  addCardOrder: function(card_id,card_price,gen_num,spe_num){
+    var that=this
+    console.log("pay...")
+       //预支付
+   wx.request({
+    url: 'https://yiwei.run/api/cardorder/addCardOrder',
+    // url: 'http://localhost:8080/api/cardorder/addCardOrder',
+    data: {
+     openid:app.globalData.openid,
+     id_user:app.globalData.id,
+     id_card:card_id,
+     price:card_price,
+     status:1,//正常订单
+     general_num:gen_num,
+     special_num:spe_num
+    },
+    header: {
+      'content-type': 'application/json' // 默认值
+    },
+    method: 'POST',
+    success(res) {
+      console.log("response...")
+      console.log(res)
+      var order_id=res.data.orderid
+      var prePayInfo=res.data.prePayInfo
+      // 调起支付
+      wx.requestPayment(
+      {
+        'timeStamp': prePayInfo.timeStamp,
+        'nonceStr': prePayInfo.nonceStr,
+        'package': prePayInfo.package,
+        'signType': 'MD5',
+        'paySign': prePayInfo.paySign,
+        'success': function (res) {
+          console.log(res)
+          that.updateVipInfo(app.globalData.id,gen_num,spe_num)
+         },
+        'fail': function (res) {
+          //订单失败或取消，更改订单状态
+          that.cancelCardOrder(order_id)
+          console.log(res)
+         }
+      })
+    },
+    fail(res){
+      console.log("response...")
+      console.log(res.data)
+    },
+  })
+},
+ /**
+   * 取消订单，修改订单状态
+   */
+cancelCardOrder(id){
+  console.log('cancel')
+  wx.request({
+    url: 'https://yiwei.run/api/cardorder/updateCardOrder',
+    // url: 'http://localhost:8080/api/cardorder/updateCardOrder',
+    data: {
+     orderid:id,
+     status:2//取消订单
+    },
+    header: {
+      'content-type': 'application/json' // 默认值
+    },
+    method: 'POST',
+    success(res) {
+      wx.showToast({
+        title: '取消成功',
+        icon: 'success',
+        duration: 1000,
+      });
+    }
+  })
+
+},
+redirectToVipInfo(){
+  wx.redirectTo({
+    url: '/pages/vipInfo/vipInfo',
+  })
+},
+//更新vip信息
+updateVipInfo(id_user,gen_num,spe_num){
+  var that = this
+  wx.request({
+    url: 'https://yiwei.run/api/vip/updateVipInfo',
+    // url: 'http://localhost:8080/api/vip/updateVipInfo',
+    data: {
+     id_user:id_user,
+     general_total:gen_num, //为了方便借用general_total字段
+     special_total:spe_num
+    },
+    header: {
+      'content-type': 'application/json' // 默认值
+    },
+    method: 'POST',
+    success(res) {
+      that.redirectToVipInfo()
+    }
+  })
+
+
+
+}
 })

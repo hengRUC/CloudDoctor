@@ -1,31 +1,31 @@
 <view class="per-container">
 	<view class="person-top">
 		<view class="info-box">
-			<view class="head-img">
-        <open-data class="head-img" type="userAvatarUrl"></open-data>
-      </view>
-			<view class="text-box">
-				<open-data type="userNickName" lang="zh_CN"></open-data>
-				<!-- <text>xxxxxxxxxxxx</text> -->
+			<!-- <view class="head-img"> -->
+        <!-- <open-data class="head-img" type="userAvatarUrl"></open-data> -->
+				<image class="head-img" src="{{avatar}}"></image> 
+      <!-- </view> -->
+			<view class="text-box" bindtap="redirectToRegister">
+				<!-- <open-data type="userNickName" lang="zh_CN"></open-data> -->
+				<text>{{username}}</text>
 			</view>
 		</view>
 		<!-- <view class="ding-box"> -->
 			<!-- <image class="ding-img" src="../../src/icon/dingding.png"></image> -->
-		<view class="protect" bindtap="redirectToDoctorRegister">
-			<text>注册</text>
+	
 		<!-- </view> -->
-		</view>
+
 	</view>
 
 	<view class="per-mid">
-		<view class="img-box" bindtap="redirectToBuyVip">
+		<view class="img-box" bindtap="redirectToBuyVip" hidden="{{is_doctor==1}}">
 			<image mode="aspectFit" class="con-img" src='../../src/icon/buyvip.png'></image>
 		</view>
 		<view class="img-box" bindtap="redirectToChat">
       <image mode="widthFix" bindtap="goChat" class="con-img" src='../../src/icon/consult.png'></image>
 		</view>
 		<view class="img-box" hidden="{{is_doctor==0}}">
-			<image mode="widthFix" class="con-img" src='../../src/icon/info.png'></image>
+			<image mode="widthFix" class="con-img" src='../../src/icon/info.png' bindtap="redirectToDoctorPersonal"></image>
 		</view>
 		<view class="img-box" bindtap="redirectToPrescription" hidden="{{is_doctor==1}}">
 			<image mode="widthFix" class="con-img" src='../../src/icon/prescription1.png' ></image>

@@ -1,5 +1,4 @@
 <!--pages/chat/chat.wxml-->
-
 <view class='flex '>
   <scroll-view class="flex1" scroll-y scroll-into-view="id{{toView}}" style='height:calc(100vh - 102rpx)'>
     <!-- <block wx:for='{{list}}' wx:key='id'> -->

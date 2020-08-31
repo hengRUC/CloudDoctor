@@ -18,19 +18,22 @@
     
 
     <view class="precription">
-        <view class="pre-name">既往病史</view>
+        <!-- <view class="pre-name">既往病史</view> -->
+                <view class="pre-name">身体状况</view>
         <view class="pre-des">{{item.illness_history}}</view>
     </view>
 
     <view>   </view>
     <view class="precription">
-      <view class="pre-name">过敏史</view>
+      <!-- <view class="pre-name">过敏史</view> -->
+                      <view class="pre-name">身体状况</view>
       <view class="pre-des">{{item.medicine_history}}</view>
     </view>
 
     <view>   </view>
     <view class="precription">
-      <view class="pre-name">过敏史</view>
+      <!-- <view class="pre-name">过敏史</view> -->
+                      <view class="pre-name">身体状况</view>
       <view class="pre-des">{{item.allergen}}</view>
 		</view>
 
@@ -46,7 +49,8 @@
 	
 	<view class="card-button" bindtap="addPatient">
 		<image src="../../src/icon/add.png" mode="widthFix" ></image>
-		<text>添加病历</text>
+		<!-- <text>添加病历</text> -->
+    <text>添加资料</text>
 	</view>
 	
 

@@ -8,6 +8,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    modalHidden: true,
+    modalContent: '',
+    //会员剩余次数
+    general_remain:0,
+    special_remain:0,
+    doctor_type:1,
+    starArray:[],
+    unstarArray:[],
     department:'',
     chat_price:50,
     inquiry_price:10,
@@ -33,11 +41,12 @@ Page({
     ],
     currentItem:0,
     map:{
-      latitude:31.306067,
+      latitude:31.319067,
       longitude:121.529228,
       scale:14,
       markers:[{
         id:0,
+        // latitude:31.306067,
         latitude:31.306067,
         longitude:121.529228,
         width:50,
@@ -189,7 +198,36 @@ Page({
     ],2500)
   } 
  },
-
+ /**
+   * 响应会员信息按钮点击事件
+  */
+onClickVip()
+{
+if(app.globalData.is_doctor==1)
+{
+  wx.showToast({
+    icon: 'none',
+    title: '您现在为专家登录，无法查看会员信息',
+    duration: 2000
+  })
+}
+else
+{
+  this.redirectToVip()
+}
+},
+redirectToVip()
+{
+  wx.redirectTo({
+    url: '/pages/vipInfo/vipInfo',
+  })
+},
+redirectToBuyVip()
+{
+  wx.redirectTo({
+    url: '/pages/buyvip/buyvip',
+  })
+},
   /**
    * 响应图文问诊按钮点击事件
   */
@@ -221,6 +259,7 @@ Page({
     //请求医生信息
     wx.request({
       url: 'https://yiwei.run/api/doctor/getDoctorByID',
+      // url: 'http://localhost:8080/api/doctor/getDoctorByID',
       data: {
         id: doctorid,
       },
@@ -242,6 +281,7 @@ Page({
         //todo:异常处理
         that.setData(
           {
+            doctor_type:resp.doctor_type,
             doctorName: resp.doctor_name,
             title: resp.title,
             score: resp.score,
@@ -277,7 +317,6 @@ Page({
       },
       method: 'POST',
       success(res) {
-        console.log(res.data.data[0])
         let resp = res.data.data
         //todo:异常处理
         that.setData(
@@ -292,50 +331,64 @@ Page({
   *响应在线咨询按钮点击事件
  */
   redirectToChatRooms: function (event) {
+    if(app.globalData.is_doctor==0){
     var that = this;
     //请求医生信息
     wx.request({
-      //url: 'http://localhost:8000/api/chat/getChatByPatientId',
-      url: 'https://yiwei.run/api/collect/getCollectByUid',
+      //url: 'http://localhost:8000/api/vip/getVipByUid',
+      url: 'https://yiwei.run/api/vip/getVipByUid',
       data: {
-        //id: app.globalData.id
-        id:7
-      },
+        id_user:app.globalData.id
+        },
       header: {
         'content-type': 'application/json' // 默认值
       },
       method: 'POST',
       success(res) {
         console.log(res.data.data[0])
-        let resp = res.data.data
-        //todo:异常处理
-        // that.setData(
-        //   {
-        //   }
-        // )
-        if(resp.length==0)
+        console.log(res.data)
+        var data=res.data.data[0]
+        that.setData({
+
+        general_remain:data.general_total-data.general_used,
+        special_remain:data.special_total-data.special_used,
+
+      })
+        if(that.data.doctor_type==0&&that.data.general_remain>0) //普通专家
         {
-          wx.showToast({
-            icon: 'none',
-            title: '请先预约！',
-          })
+          that.setData({
+            modalContent:'本次咨询将扣除1次普通专家咨询次数，是否发起咨询？',
+            modalHidden: false
+          });
+        } 
+        else if(that.data.doctor_type==1&&that.data.special_remain>0) //特殊专家
+        {
+          that.setData({
+            modalContent:'本次咨询将扣除1次特殊专家咨询次数，是否发起咨询？',
+            modalHidden: false
+          });
         }
+        //次数不足，跳转
         else{
-          wx.navigateTo({
-            url: '/pages/chat/chat',
-            success: function (res) {
-              // 通过eventChannel向被打开页面传送数据
-              //res.eventChannel.emit('sendData', doctorid)
-            }
-          })
+          console.log(that.data.doctor_type)
+          console.log(that.data.general_remain)
+          that.redirectToBuyVip()
         }
       }
-    })
+    })}
+    else{
+      wx.showToast({
+        icon: 'none',
+        title: '您现在为专家登录，无法向其他专家咨询',
+        duration:2000
+      })
+    }
   },
   /**
   *响应预约挂号按钮点击事件
  */
   redirectToSchedule: function (event) {
+    if(app.globalData.is_doctor==0){
     var chat_info={
       id_patient:this.data.patientid,
       id_doctor:this.data.doctorid,
@@ -348,13 +401,26 @@ Page({
     }
     console.log("doctor_home")
     console.log(this.data.doctor_openid)
-    wx.navigateTo({
-      url: '/pages/schedule/schedule',
-      success: function (res) {
-        // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('sendData', chat_info)
-      }
+    wx.showToast({
+      icon: 'none',
+      title: '当前无需预约，请直接发起咨询',
+      duration:2000
     })
+    // wx.navigateTo({
+    //   url: '/pages/schedule/schedule',
+    //   success: function (res) {
+    //     // 通过eventChannel向被打开页面传送数据
+    //     res.eventChannel.emit('sendData', chat_info)
+    //   }
+    // })
+  }
+  else{
+    wx.showToast({
+      icon: 'none',
+      title: '您现在为专家登录，无法向其他专家咨询',
+      duration:2000
+    })
+  }
   },
   /**
   *响应问诊价格按钮点击事件
@@ -369,6 +435,8 @@ Page({
   *收藏医生
  */
  onClickLike(){
+   if(app.globalData.is_doctor==0)
+   {
   wx.showToast({
     icon: 'none',
     title: '收藏成功',
@@ -397,11 +465,21 @@ Page({
           console.log(res.data)
         }
       })
+    }
+    else{
+      wx.showToast({
+        icon: 'none',
+        title: '您现在为专家登录，无法收藏',
+        duration:2000
+      })
+    }
 },
 /**
   *取消收藏医生
  */
  onClickDislike(){
+   if(app.globalData.is_doctor==0)
+   {
   wx.showToast({
     icon: 'none',
     title: '取消收藏成功',
@@ -424,11 +502,20 @@ Page({
       console.log(res.data)
     }
   })
+}
+else{
+  wx.showToast({
+    icon: 'none',
+    title: '您现在为专家登录，无法收藏',
+    duration:2000
+  })
+}
 },
 /**
   *是否收藏
  */
 checkLike(){
+  if(app.globalData.is_doctor==0){
   //查询收藏
   var that=this
   wx.request({
@@ -452,4 +539,80 @@ checkLike(){
     }
   })
 }
+},
+
+
+//确认咨询
+confirmChat(){
+this.modalHide()
+if(this.data.doctor_type==0)
+{
+  this.minusVipInfo(1,0)
+}
+else if(this.data.doctor_type==1)
+{
+  this.minusVipInfo(0,1)
+}
+this.addChatOrder()
+},
+minusVipInfo(gen_num,spe_num){
+    var that = this
+    wx.request({
+      url: 'https://yiwei.run/api/vip/minusVipInfo',
+      // url: 'http://localhost:8080/api/vip/minusVipInfo',
+      data: {
+       id_user:app.globalData.id,
+       general_total:gen_num, //为了方便借用general_total字段
+       special_total:spe_num
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      method: 'POST',
+      success(res) {
+        // that.redirectToVipInfo()
+      }
+    })
+},
+modalHide: function (e) {
+  this.setData({
+    modalHidden: true
+  })
+},
+addChatOrder: function(){
+  var that=this
+ wx.request({
+  url: 'https://yiwei.run/api/chatorder/addChatOrder',
+  // url: 'http://localhost:8080/api/chatorder/addChatOrder',
+  data: {
+   id_patient:app.globalData.id,
+   id_doctor:that.data.doctorid,
+   patient_openid:app.globalData.openid,
+   doctor_openid:that.data.doctor_openid,
+   status:0,
+   doctor_name:that.data.doctorName,
+   patient_name:app.globalData.name,
+  //  start_time:that.data.startTime,
+  //  end_time:endTime,
+  //  price:that.data.price,
+   doctor_avatar:that.data.avatar,
+  },
+  header: {
+    'content-type': 'application/json' // 默认值
+  },
+  method: 'POST',
+  success(res) {
+    console.log("response...")
+    console.log(res)
+    that.redirectToChat()
+  },
+ 
+})
+   },
+
+   redirectToChat(){
+    wx.redirectTo({
+      url: '/pages/chat/chat',
+    })
+   },
 })

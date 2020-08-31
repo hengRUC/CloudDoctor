@@ -5,7 +5,9 @@
     <!-- room name -->
     <view class="middle">{{groupName}}</view>
     <!-- reserved -->
-    <view class="right"></view>
+    <view class="right">
+     <button size="mini" disabled="{{!chatStatus}}" hidden="{{!ifend}}"class="consultButton" bindtap="endConsult">结束咨询</button>
+    </view>
   </view>
 
   <!-- chats -->
@@ -62,7 +64,7 @@
 
   <!-- message sender -->
   <view class="footer">
-    <view class="message-sender" wx:if="{{userInfo}}">
+    <view class="message-sender" wx:if="{{chatStatus}}">
       <image wx:if="{{!recording}}"  src="./record.png" class="btn-send-image"  mode="scaleToFill" bindtap="onAudio"></image>
       <image wx:if="{{recording}}" src="./record.gif" class="btn-send-image"  mode="scaleToFill"  bindtap="offAudio"></image>
 
@@ -85,12 +87,15 @@
       
     </view>
 
-    <view class="message-sender" wx:if="{{!userInfo}}">
+    <!-- <view class="message-sender" wx:if="{{!userInfo}}">
       <button 
         open-type="getUserInfo" 
         bindgetuserinfo="onGetUserInfo"
         class="userinfo"
       >请先登录后参与聊天</button>
+    </view> -->
+     <view class="message-sender" wx:if="{{!chatStatus}}">
+         <button  class="userinfo">咨询已结束</button >
     </view>
   </view>
 

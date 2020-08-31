@@ -1,6 +1,10 @@
+page{
+  background-color :#f6f6f6;
+  height:100%
+}
 .per-container{
   background-color: #f6f6f6;
-  
+  /* height:100% */
 }
 
 .person-top{
@@ -27,6 +31,7 @@
   height: 100rpx;
   border-radius: 50%; 
   overflow:hidden;  
+  /* background-color: black; */
 }
 
 .ding-box{

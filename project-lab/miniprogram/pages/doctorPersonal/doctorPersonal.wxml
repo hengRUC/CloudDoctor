@@ -1,0 +1,22 @@
+<!--pages/doctorList/doctorList.wxml-->
+<view class="reg-box" >
+	<image class="reg-top" src='../../src/icon/vip.png' mode="widthFix" bindtap="loginss"></image>
+
+	<view class="reg-mid">
+	</view>
+
+
+  <view class="infoBlocks">
+    <view class="title">
+      <text class="titleText">本月咨询次数</text>
+    </view>
+    <view class="details">
+      <view class="detailsInfo">
+        本月已服务患者数： <text class="availableTimes">{{patientNum}}</text>
+      </view>
+
+    </view>
+  </view>
+  
+
+</view>

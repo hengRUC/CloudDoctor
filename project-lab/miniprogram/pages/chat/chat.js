@@ -105,7 +105,7 @@ Page({
         )
         if(that.data.orderList.length==0){
           wx.showToast({
-            title: '还没有咨询哦，去向专家发起咨询吧~',
+            title: '还没有咨询哦，去发起咨询吧~',
             icon: 'none',
             duration: 5000
             })
@@ -127,11 +127,15 @@ Page({
     wx.navigateTo({
       url: '/pages/room/room',
       success: function (res) {
+        var boolean_status=true
+        if(status==1){
+          boolean_status=false
+        }
         var chatinfo={
           groupid: groupid,
           doctor_name:doctor_name,
           doctor_avatar:doctor_avatar,
-          status:status
+          room_status:boolean_status
         }
         // 通过eventChannel向被打开页面传送数据
         //res.eventChannel.emit('sendData', roomid)
