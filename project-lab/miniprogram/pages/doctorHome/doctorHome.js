@@ -1,5 +1,7 @@
 const app = getApp()
 const cloudPath="cloud://airobot-z9ted.6169-airobot-z9ted-1302168733/"
+const TmplId = '4SnZohkpw5KAM4rxZYUrUl1TDncs9-RexIfgsNoFIwo';
+var utils=require('../../utils/util.js')
 
 // pages/doctorHome/doctorHome.js
 Page({
@@ -87,7 +89,18 @@ Page({
       // },
     ],
     commentList:[],
-    isCollect:0
+    isCollect:0,
+    item: {
+      "thing1": {
+        "value": "X医生的咨询"
+      },
+      "thing3": {
+        "value": "请在X个工作日以内进入聊天室咨询"
+      },//推送文案： 预约时间：this.data.startTime - this.data.endTime
+      "character_string5": {
+        "value": "a3510731313"
+      }
+    },
   },
 
   /**
@@ -354,26 +367,8 @@ redirectToBuyVip()
         special_remain:data.special_total-data.special_used,
 
       })
-        if(that.data.doctor_type==0&&that.data.general_remain>0) //普通专家
-        {
-          that.setData({
-            modalContent:'本次咨询将扣除1次普通专家咨询次数，是否发起咨询？',
-            modalHidden: false
-          });
-        } 
-        else if(that.data.doctor_type==1&&that.data.special_remain>0) //特殊专家
-        {
-          that.setData({
-            modalContent:'本次咨询将扣除1次特殊专家咨询次数，是否发起咨询？',
-            modalHidden: false
-          });
-        }
-        //次数不足，跳转
-        else{
-          console.log(that.data.doctor_type)
-          console.log(that.data.general_remain)
-          that.redirectToBuyVip()
-        }
+      that.checkChatOrder()//检查订单状态，已有订单则跳转
+    
       }
     })}
     else{
@@ -604,6 +599,20 @@ addChatOrder: function(){
   success(res) {
     console.log("response...")
     console.log(res)
+    //设置推送消息
+    var groupid=res.data.groupId
+    var orderid=res.data.orderId
+    var value1="item.thing1.value"
+    var value2="item.thing3.value"
+    var value3="item.character_string5.value"
+    that.setData({
+      // group_id:"聊天室id",
+      [value1]:"发起了咨询",
+      [value2]: "刚刚",
+      [value3]:"订单id"
+    })
+    utils.Subscrib(that.data.item,that.data.doctor_openid,TmplId)
+    //====
     that.redirectToChat()
   },
  
@@ -615,4 +624,58 @@ addChatOrder: function(){
       url: '/pages/chat/chat',
     })
    },
+   /*
+   检查是否已经存在进行中订单
+   */
+ checkChatOrder: function () {
+   console.log("function checkChatOrder")
+  var that = this;
+  //请求医生信息
+  wx.request({
+    // url: 'https://yiwei.run/api/chatorder/getChatOrderStatus',
+    url: 'http://localhost:8080/api/chatorder/getChatOrderStatus',
+    data: {
+      id_patient:app.globalData.id,
+      id_doctor:this.data.doctorid
+    },
+    header: {
+      'content-type': 'application/json' // 默认值
+    },
+    method: 'POST',
+    success(res) {
+      console.log("checkChatOrder")
+      console.log(res.data.data)
+      var data=res.data.data
+        if(data.length!=0&&data[0].status==0)
+        {
+          that.redirectToChat()
+        }
+        else{
+          if(that.data.doctor_type==0&&that.data.general_remain>0) //普通专家
+          {
+            that.setData({
+              modalContent:'本次咨询将扣除1次普通专家咨询次数，是否发起咨询？',
+              modalHidden: false
+            });
+          } 
+          else if(that.data.doctor_type==1&&that.data.special_remain>0) //特殊专家
+          {
+            that.setData({
+              modalContent:'本次咨询将扣除1次特殊专家咨询次数，是否发起咨询？',
+              modalHidden: false
+            });
+          }
+          //次数不足，跳转
+          else{
+            console.log(that.data.doctor_type)
+            console.log(that.data.general_remain)
+            that.redirectToBuyVip()
+          }
+        }
+
+     
+    }
+  })
+},
+
 })

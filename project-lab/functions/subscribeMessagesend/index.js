@@ -41,6 +41,7 @@ exports.main = async (event, context) => {
             },
           });
       } catch (e) {
+        console.log("what happen")
         return e;
       }
     });
