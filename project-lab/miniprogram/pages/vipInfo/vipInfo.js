@@ -104,4 +104,9 @@ Page({
     }
 })
 },
+redirectToDoctorList(){
+   wx.switchTab({
+     url: '/pages/doctorList/doctorList',
+   })
+}
 })

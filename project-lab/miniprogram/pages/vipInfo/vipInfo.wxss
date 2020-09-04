@@ -142,7 +142,7 @@ page {
 }
 
 .reg-button{
-  margin: 75rpx 20rpx 55rpx 20rpx;
+  margin-top: 30rpx;
   border-radius: 100rpx;
   background-color: #0091ff;
   border:2rpx solid #fff;

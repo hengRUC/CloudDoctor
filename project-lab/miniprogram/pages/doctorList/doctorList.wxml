@@ -1,10 +1,10 @@
 <!--pages/doctorList/doctorList.wxml-->
 <view class="container">
   <view class="search">
-    <!-- <image src="../../src/icon/delete.png" class="deleteImg"></image> -->
     <image src="../../src/icon/search.png" bindtap="onClickSearch" class="deleteImg"></image>
     <input placeholder="搜索咨询内容" style="text-align:center" bindinput="bindSearch" class="inputSearch"></input>
   </view>
+
   <view class='result-container' style="position: fixed; z-index: 10">
   <view class='search-history' wx:if="{{StorageFlag}}">
       <view class='weui-flex' wx:for="{{searcherStorage}}" catchtap='tapSearcherStorage' data-searchtext="{{item.text}}">
@@ -13,6 +13,22 @@
       </view>
   </view>
 </view>
+
+<mp-vtabs 
+  vtabs="{{vtabs}}" 
+  activeTab="{{activeTab}}" 
+  bindtabclick="onTabCLick"
+  bindchange="onChange"
+  class="test"
+>
+  <block wx:for="{{vtabs}}" wx:key="title" >
+    <mp-vtabs-content tabIndex="{{index}}">
+      <view class="vtabs-content-item">我是第{{index + 1}}项： {{item.title}}</view>
+    </mp-vtabs-content>
+  </block>
+</mp-vtabs>
+
+
   <view class="content">
   <view class="sector-one"></view>
     <view class="typeList">
@@ -23,13 +39,11 @@
         <view class="typeText2" wx:if= "{{item.status == 1}}">
         {{item.type}}
         </view>
-        <!-- <text class="typeText3">（咨询）</text> -->
 
       </view>
     </view>
     <view class="doctorList">
       <view class="doctor" wx:for="{{doctorList}}">
-        <!-- <image src="{{item.avatar}}" class="doctorImg"></image> -->
         <image src="{{item.avatar}}" class="doctorImg"  mode='aspectFill'></image>
         <view class="doctorInfo">
           <view class="doctorNamePos">
@@ -43,7 +57,6 @@
             <text class="doctorPos">普通专家</text>
              </view>
           </view>
-          <!-- <text class="doctorDep">{{item.department}} 咨询</text> -->
           <view class="doctorScore">
             <image src="../../src/icon/star.png" class="star"></image>
             <text class="score">{{item.score}}</text>
@@ -51,8 +64,6 @@
           </view>
           <text class="doctorSpecial">{{item.expert}}</text>
           <view class="priceConsult">
-            <!-- <image src="../../src/icon/spe2.png" class="spe"></image>
-            <text class="review">特殊专家</text> -->
             
           </view>
           <button style="width:auto" class="consultButton" bindtap="onClickConsult" data-doctorId="{{item.id}}">向他咨询</button>

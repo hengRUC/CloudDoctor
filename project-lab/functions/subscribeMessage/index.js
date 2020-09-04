@@ -19,6 +19,7 @@ exports.main = async (event, context) => {
         done: false,
       },
     });
+    console.log("in subscribeMessage")
     console.log(result);
     return result;
   } catch (err) {

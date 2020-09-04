@@ -5,6 +5,11 @@
 	<view class="reg-mid">
 	</view>
 
+ <view class="reg-bottom">
+
+		<button class='reg-button' hover-class="reg-button-hover" style='padding: 8px 40px;' bindtap="redirectToDoctorList">去咨询</button>
+
+	</view>
 
   <view class="infoBlocks">
     <view class="title">

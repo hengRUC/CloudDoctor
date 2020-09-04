@@ -609,7 +609,7 @@ addChatOrder: function(){
       // group_id:"聊天室id",
       [value1]:"发起了咨询",
       [value2]: "刚刚",
-      [value3]:"订单id"
+      // [value3]:"订单id"
     })
     utils.Subscrib(that.data.item,that.data.doctor_openid,TmplId)
     //====
@@ -632,8 +632,8 @@ addChatOrder: function(){
   var that = this;
   //请求医生信息
   wx.request({
-    // url: 'https://yiwei.run/api/chatorder/getChatOrderStatus',
-    url: 'http://localhost:8080/api/chatorder/getChatOrderStatus',
+    url: 'https://yiwei.run/api/chatorder/getChatOrderStatus',
+    // url: 'http://localhost:8080/api/chatorder/getChatOrderStatus',
     data: {
       id_patient:app.globalData.id,
       id_doctor:this.data.doctorid

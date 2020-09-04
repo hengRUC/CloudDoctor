@@ -1,0 +1,23 @@
+{
+  "name": "clouddoctor",
+  "version": "1.0.0",
+  "description": "Small APP for Remote Inquiry",
+  "main": "index.js",
+  "dependencies": {
+    "@miniprogram-component-plus/vtabs": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ymir1226/CloudDoctor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ymir1226/CloudDoctor/issues"
+  },
+  "homepage": "https://github.com/ymir1226/CloudDoctor#readme"
+}
