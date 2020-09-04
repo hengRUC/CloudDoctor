@@ -75,6 +75,68 @@ const formatNumber = n => {
     })
   }
 
+//未完成，todo：写成公共方法
+ /**
+   * 上传图片
+   **/
+  function uploadPic (){
+    var that = this
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success(res) {   
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFilePaths
+        that.setData({
+          images:that.data.images.concat(res.tempFilePaths)
+        })
+    }
+  })
+  }
+  //删除图片
+  function deleteImage (){
+    var index = event.currentTarget.dataset.idx
+    let that = this
+    that.data.images.splice(index, 1)
+    that.setData({
+      images: that.data.images
+    })
+  }
+  //上传图片到云端
+  function uploadImagesToCloud()
+  { 
+    // 云函数上传
+    //生成随机字符串
+    var rString = this.randomString(10, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    var that=this
+    var pics=''
+    for(var i=0;i<that.data.images.length;i++){
+    let timestamp = (new Date()).valueOf();
+    let path='inquiry/'+rString+'/'+timestamp + '.png'
+    pics=pics+path+';'
+   
+    wx.cloud.uploadFile({
+      cloudPath: path,
+      // filePath: tempFilePaths[0],
+      filePath: that.data.images[i],
+      success: res => {
+        console.log('上传成功', res)
+      },
+      fail: e => {
+        console.error('[上传文件] 失败：', e)
+        wx.showToast({
+          icon: 'none',
+          title: '上传失败',
+        })
+      }
+    })
+    that.setData({
+      picurlList:pics
+    })
+  }
+  }
+
 
 module.exports = {
   formatTime: formatTime,
