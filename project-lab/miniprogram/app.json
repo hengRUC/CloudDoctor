@@ -6,6 +6,7 @@
     "pages/register/register",
     "pages/comment/comment",
     "pages/schedule/schedule",
+    "pages/inquiry/inquiry",
     "pages/chat/chat",
     "pages/room/room",
     "pages/editPatient/editPatient",

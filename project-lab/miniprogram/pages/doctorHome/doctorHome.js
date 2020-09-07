@@ -613,7 +613,57 @@ addChatOrder: function(){
     })
     utils.Subscrib(that.data.item,that.data.doctor_openid,TmplId)
     //====
-    that.redirectToChat()
+
+    wx.cloud.callFunction({
+      name: "caseConsultation",
+      data: {
+        optype: 'query',
+        id: '',
+        groupId: groupid,
+        haveCase: false
+      },
+      success: async (res) => {
+        if (res.result.length == 0) {
+          // 本次咨询没有病例就创建状态
+          await wx.cloud.callFunction({
+            name: "caseConsultation",
+            data: {
+              optype: 'add',
+              id: '',
+              groupId: groupid,
+              haveCase: false
+            },
+            success(res1) {
+              that.redirectToInquiry(groupid)
+            },
+            fail(res1) {
+              console.log(res1)
+            }
+          })
+        }
+        else {
+          // 本次咨询有以往病例就修改状态
+          await wx.cloud.callFunction({
+            name: "caseConsultation",
+            data: {
+              optype: 'update',
+              id: res.result[0]._id,
+              groupId: groupid,
+              haveCase: false
+            },
+            success(res1) {
+              that.redirectToInquiry(groupid)
+            },
+            fail(res1) {
+              console.log(res1)
+            }
+          })
+        }
+      },
+      fail(res) {
+        console.log(res)
+      }
+    })
   },
  
 })
@@ -624,6 +674,16 @@ addChatOrder: function(){
       url: '/pages/chat/chat',
     })
    },
+
+  redirectToInquiry(groupid) {
+    wx.navigateTo({
+      url: '/pages/inquiry/inquiry',
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('sendData', groupid)
+      }
+    })
+  },
    /*
    检查是否已经存在进行中订单
    */
@@ -648,7 +708,31 @@ addChatOrder: function(){
       var data=res.data.data
         if(data.length!=0&&data[0].status==0)
         {
-          that.redirectToChat()
+          wx.cloud.callFunction({
+            name: "caseConsultation",
+            data: {
+              optype: 'query',
+              id: '',
+              groupId: data[0].group_id,
+              haveCase: false
+            },
+            success(res) {
+              if (res.result.length == 0){
+                console.log("按道理不可能，addChatOrder已经创建完了")
+              }
+              else{
+                if (res.result[0].haveCase){
+                  that.redirectToChat()
+                }
+                else{
+                  that.redirectToInquiry(data[0].group_id)
+                }
+              }
+            },
+            fail(res) {
+              console.log(res)
+            }
+          })
         }
         else{
           if(that.data.doctor_type==0&&that.data.general_remain>0) //普通专家

@@ -107,11 +107,11 @@
   font-size: 24rpx;
 }
 
-#pay{
+#gochat{
   background-color: #0091ff;
 }
 
-#pay text{
+#gochat text{
   color: #fff; 
 }
 
